@@ -3,7 +3,7 @@ import random
 #银行库
 bank = {"张江河":{"account":"fcTVzj9m","password":123456,"acctype":1,"country":"中国","province":"浙江","street":"万花乡","door":"332","bank_name":"中国农业银行昌平沙河支行","money":3000000},
         "万军":{"account":"fcTVzj80","password":123456,"acctype":0,"country":"中国","province":"浙江","street":"万花乡","door":"312","bank_name":"中国农业银行昌平沙河支行","money":5000000}}
-bank_name = "中国农业银行昌平支行"
+bank_name = "中国农业银行昌平镇沙河支行"
 bank_choice = {"1":"开户","2":"存钱","3":"取钱","4":"转账","5":"查询","6":"Bye"}  # 银行业务选项
 # 开户成功的信息模板
 myinfo='''
