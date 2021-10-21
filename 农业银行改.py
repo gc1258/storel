@@ -3,7 +3,7 @@ import random
 #银行库
 bank = {"张江河":{"account":"fcTVzj9m","password":123456,"acctype":1,"country":"中国","province":"浙江","street":"万花乡","door":"332","bank_name":"中国农业银行昌平沙河支行","money":3000000},
         "万军":{"account":"fcTVzj80","password":123456,"acctype":0,"country":"中国","province":"浙江","street":"万花乡","door":"312","bank_name":"中国农业银行昌平沙河支行","money":5000000}}
-bank_name = "中国工商银行昌平支行"
+bank_name = "中国农业银行昌平支行"
 bank_choice = {"1":"开户","2":"存钱","3":"取钱","4":"转账","5":"查询","6":"Bye"}  # 银行业务选项
 # 开户成功的信息模板
 myinfo='''
@@ -41,6 +41,31 @@ def print_welcome():
     for i in keys:
         print(welcome_item.format(i,bank_choice[i]))
     print("**********************************")
+
+
+#判断类型
+def type(chose):
+    while True:
+        print("请输入", chose, ":")
+        i = input(">>>:")
+        if i == '0':
+            return int(i)
+        elif i == '1':
+            return int(i)
+        else:
+            print("账户类型错误，请重新输入!")
+            continue
+
+def passtype(chose,datatype="str"):
+    while True:
+        print("请输入", chose, ":")
+        i = input(">>>:")
+        if len(i) == 6:
+            if datatype != 'str':
+                return int(i)
+        else:
+            print("密码设置错误，请重新输入!")
+            continue
 
 # 输入帮助方法：chose是打印选项
 def inputHelp(chose,datatype="str"):
@@ -167,7 +192,12 @@ def bank_transformMoney(outputaccount,inputaccount,outputpassword,outputmoney):
         elif status == 3:
             return status
     else:
-        return None
+        if bank[uname]["acctype"] == 0:
+            print("您是金卡用户，每日单笔转账限额50000")
+            return None
+        elif bank[uname]["acctype"] == 1:
+            print("您是普通卡用户，每日单笔转账限额20000")
+            return None
 
     if inputaccount != None and findByAccount(inputaccount) != None:
         bank_saveMoney(inputaccount,outputmoney)
@@ -179,8 +209,8 @@ def bank_transformMoney(outputaccount,inputaccount,outputpassword,outputmoney):
 # 开户方法
 def  addUser():
     username = inputHelp("用户名")
-    password = inputHelp("密码","int")
-    acctype = inputHelp("账户类型(0:金卡/1:普通卡)","int")
+    password = passtype("密码","int")
+    acctype = type("账户类型(0:金卡/1:普通卡)")
     country = inputHelp("居住地址：1.国家：")
     province =  inputHelp("省份")
     street = inputHelp("街道")
@@ -208,8 +238,6 @@ def  addUser():
         print("改用户已经存在！请携带证件到其他银行办理！谢谢！！！！！")
     elif status == 3:
         print("银行库已满！请携带证件到其他银行办理！谢谢！！！！！")
-    else:
-        print("密码设置错误！")
 
 # 存钱
 def saveMoney():
@@ -239,7 +267,7 @@ def saveMoney():
 # 取钱
 def takeMoney():
     account = inputHelp("账户")
-    password =  inputHelp("密码","int")
+    password =  passtype("密码","int")
     tmoney = inputHelp("取出金额","int")
 
     f = bank_takeMoney(account,password,tmoney)
@@ -259,7 +287,7 @@ def takeMoney():
 def transformMoney():
     output = inputHelp("转出的账号")
     input = inputHelp("转入的账号")
-    outputpass =  inputHelp("转出的密码","int")
+    outputpass =  passtype("转出的密码","int")
     outputmoney = inputHelp("要转出的金额","int")
 
     f = bank_transformMoney(output,input,outputpass,outputmoney)
@@ -280,7 +308,7 @@ def transformMoney():
 # 查询账户方法
 def selectUser():
     account = inputHelp("账号")
-    password = inputHelp("密码","int")
+    password = passtype("密码","int")
 
     bank_selectUser(account,password)
 
